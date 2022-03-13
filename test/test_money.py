@@ -65,8 +65,8 @@ class TestAdd(unittest2.TestCase):
     _SOME_YEN_DEBT = sc_messages.Money(currencyCode=u'JPY', units=-2, nanos=-1)
     _SOME_MORE_YEN = sc_messages.Money(currencyCode=u'JPY', units=1, nanos=3)
     _SOME_USD = sc_messages.Money(currencyCode=u'USD', units=1, nanos=0)
-    _INT64_MAX = sys.maxint
-    _INT64_MIN = -sys.maxint - 1
+    _INT64_MAX = sys.maxsize
+    _INT64_MIN = -sys.maxsize - 1
     _LARGE_YEN = sc_messages.Money(
         currencyCode=u'JPY', units=_INT64_MAX -1, nanos=0)
     _LARGE_YEN_DEBT = sc_messages.Money(

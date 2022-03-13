@@ -14,12 +14,15 @@
 
 from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import datetime
 import json
 import os
 import tempfile
 import unittest2
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from apitools.base.py import encoding
 from expects import be_false, be_none, be_true, expect, equal, raise_error
@@ -795,14 +798,14 @@ class TestMethodRegistryCustomMethodConfig(_JsonServiceBase, unittest2.TestCase)
     _INPUT = _CUSTOM_METHOD_CONFIG_TEST
     def test_configures_custom_method(self):
         registry = self._get_registry()
-        url = urllib.quote(u'/shelves/88:lock')  # custom methods come in percent-encoded
+        url = urllib.parse.quote(u'/shelves/88:lock')  # custom methods come in percent-encoded
         info = registry.lookup(u'POST', url)
         assert info is not None
         assert info.selector == 'Bookstore.LockShelf'
 
     def test_other_characters_still_quoted(self):
         registry = self._get_registry()
-        shelf = urllib.quote('A/Z', safe='')
+        shelf = urllib.parse.quote('A/Z', safe='')
         assert '/' not in shelf
         url = '/shelves/{}/books'.format(shelf)
         info = registry.lookup(u'POST', url)

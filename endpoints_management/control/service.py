@@ -28,10 +28,13 @@ tracked.
 
 from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import collections
 import logging
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 from apitools.base.py import encoding
@@ -157,7 +160,7 @@ class MethodRegistry(object):
         if not tmi:
             _logger.debug(u'No methods for http method %s in %s',
                           http_method,
-                          self._templates_method_infos.keys())
+                          list(self._templates_method_infos.keys()))
             return None
         # need to remove url quoting of colons. this is the simplest way.
         path = path.replace('%3A', ':')
@@ -423,7 +426,7 @@ def extract_report_spec(
                                          metric_is_supported,
                                          labels_dict,
                                          label_is_supported)
-    return logs, metrics_dict.keys(), labels_dict.keys()
+    return logs, list(metrics_dict.keys()), list(labels_dict.keys())
 
 
 def _add_logging_destinations(destinations,

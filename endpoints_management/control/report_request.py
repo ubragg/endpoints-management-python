@@ -22,6 +22,8 @@ ReportRequests.
 
 from __future__ import absolute_import
 
+from builtins import range
+from builtins import object
 import collections
 import functools
 import hashlib
@@ -103,10 +105,10 @@ class ReportingRules(collections.namedtuple(u'ReportingRules',
         known_metrics = []
         # pylint: disable=no-member
         # pylint is not aware of the __members__ attributes
-        for l in label_descriptor.KnownLabels.__members__.values():
+        for l in list(label_descriptor.KnownLabels.__members__.values()):
             if l.update_label_func and l.label_name in label_names:
                 known_labels.append(l)
-        for m in metric_descriptor.KnownMetrics.__members__.values():
+        for m in list(metric_descriptor.KnownMetrics.__members__.values()):
             if m.update_op_func and m.metric_name in metric_names:
                 known_metrics.append(m)
         return cls(logs=logs, metrics=known_metrics, labels=known_labels)
@@ -480,7 +482,7 @@ class Aggregator(object):
             return _NO_RESULTS
         if self._cache is not None:
             with self._cache as k:
-                res = [x.as_operation() for x in k.values()]
+                res = [x.as_operation() for x in list(k.values())]
                 k.clear()
                 k.out_deque.clear()
                 return res
@@ -521,7 +523,7 @@ class Aggregator(object):
         # This holds a lock on the cache while updating it.  No i/o operations
         # are performed, so any waiting threads see minimal delays
         with self._cache as cache:
-            for key, op in ops_by_signature.items():
+            for key, op in list(ops_by_signature.items()):
                 agg = cache.get(key)
                 if agg is None:
                     cache[key] = operation.Aggregator(op, self._kinds)

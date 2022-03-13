@@ -28,8 +28,8 @@ from . import sc_messages
 
 _logger = logging.getLogger(__name__)
 
-_INT64_MAX = sys.maxint
-_INT64_MIN = -sys.maxint - 1
+_INT64_MAX = sys.maxsize
+_INT64_MIN = -sys.maxsize - 1
 _BILLION = 1000000000
 MAX_NANOS = _BILLION - 1
 _MSG_3_LETTERS_LONG = u'The currency code is not 3 letters long'
